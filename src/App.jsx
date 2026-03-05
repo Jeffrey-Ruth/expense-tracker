@@ -1,34 +1,57 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [expenses, setExpenses] = useState([]);
+    const [name, setName] = useState("");
+    const [amount, setAmount] = useState("");
+
+    const addExpense = () => {
+        if (!name || !amount) return;
+
+        const newExpense = {
+            id: Date.now(),
+            name: name,
+            amount: amount
+        };
+
+        setExpenses([...expenses, newExpense]);
+        setName("");
+        setAmount("");
+    };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div style={{ padding: "20px" }}>
+          <h1>Expense Tracker</h1>
+
+          <div>
+              <input
+                  type="text"
+                  placeholder="Expense name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+              />
+
+              <input
+                  type="number"
+                  placeholder="Amount"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+              />
+
+              <button onClick={addExpense}>Add Expense</button>
+          </div>
+
+          <h2>Expenses</h2>
+
+          <ul>
+              {expenses.map((expense) => (
+                  <li key={expense.id}>
+                      {expense.name} - ${expense.amount}
+                  </li>
+              ))}
+          </ul>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
   )
 }
 
