@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import ExpenseCharts from "./components/ExpenseCharts";
 
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
         const newExpense = {
             id: Date.now(),
             name: name,
-            amount: amount
+            amount: amount,
+            category: category
         };
 
         setExpenses([...expenses, newExpense]);
@@ -32,54 +34,64 @@ function App() {
         setExpenses(expenses.filter((expense) => expense.id !== id));
     };
 
-  return (
-      <div style={{ padding: "20px" }}>
-          <h1>Expense Tracker</h1>
+return (
+  <div style={{ display: "flex", padding: "20px" }}>
 
-          <div>
-              <input
-                  type="text"
-                  placeholder="Expense name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-              />
+    {/* LEFT SIDE */}
+    <div style={{ flex: 1 }}>
+      <h1>Expense Tracker</h1>
 
-              <input
-                  type="number"
-                  placeholder="Amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-              />
+      <div>
+        <input
+          type="text"
+          placeholder="Expense name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-              <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-              >
-                  <option value="Food">Food</option>
-                  <option value="Groceries">Groceries</option>
-                  <option value="Gas">Gas</option>
-                  <option value="Entertainment">Entertainment</option>
-                  <option value="Bills">Bills</option>
-                  <option value="Misc">Misc</option>
-              </select>
+        <input
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
 
-              <button onClick={addExpense}>Add</button>
-          </div>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="Food">Food</option>
+          <option value="Groceries">Groceries</option>
+          <option value="Gas">Gas</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Bills">Bills</option>
+          <option value="Misc">Misc</option>
+        </select>
 
-          <h2>Expenses</h2>
-
-          <ul>
-              {expenses.map((expense) => (
-                  <li key={expense.id}>
-                      {expense.name} - ${expense.amount}
-                      <button onClick={() => deleteExpense(expense.id)}>
-                          Delete
-                      </button>
-                  </li>
-              ))}
-          </ul>
+        <button onClick={addExpense}>Add</button>
       </div>
-  )
+
+      <h2>Expenses</h2>
+
+      <ul>
+        {expenses.map((expense) => (
+            <li key={expense.id}>
+                {expense.name} - ${expense.amount} ({expense.category})
+                <button onClick={() => deleteExpense(expense.id)}>
+                    Delete
+                </button>
+            </li>
+        ))}
+      </ul>
+    </div>
+
+    {/* RIGHT SIDE */}
+    <div style={{ width: "450px", marginLeft: "40px" }}>
+      <ExpenseCharts expenses={expenses} />
+    </div>
+
+  </div>
+);
 }
 
 export default App
